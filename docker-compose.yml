@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+  crime-sense-backend:
+    container_name: crime-sense-backend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    build:
+        context: ./ 
+    ports:
+      - 4001:4001
+  
