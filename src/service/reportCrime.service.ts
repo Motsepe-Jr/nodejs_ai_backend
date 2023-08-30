@@ -17,6 +17,7 @@ export async function createReportCrime(input: ReportCrimeInput) {
     timer({...metricsLables, success:"true" })
     return {
       success: true,
+      message: 'success',
       result
     };
   } catch (e) {

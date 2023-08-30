@@ -7,7 +7,7 @@ export async function createCrimeType(input: { lat: number; lon: number}) {
   try {
     
     const distance_meters = 1000
-    const unitValue = 25
+    const unitValue = 10
     
     const result = await PredictionModel.find({
               location: {
@@ -21,21 +21,16 @@ export async function createCrimeType(input: { lat: number; lon: number}) {
               }
           }).limit(1)
 
-    if (result.length == 0) return {
-      success: false,
-      message: "Our model's accuracy is optimized for predictions within a specific region"
-    }
 
-    const ml_result = await getCrimeTypePredictions({'latitude':input.lat,'longitude':input.lon,
-                                     'population': result[0]['population'], 
-                                      'area': result[0]['area']})
+    const ml_result = await getCrimeTypePredictions(
+      {
+      'latitude': result.length > 0 ? input.lat:-25.97,
+      'longitude': result.length > 0 ? input.lon: 28.12,
+      'population': result.length > 0 ? result[0]['population']: 11514.0, 
+      'area': result.length > 0 ? result[0]['area']:4.36
+      }
+)
 
-    if (!ml_result) return  {
-      success: false,
-      message: 'ai service failed to get predictions'
-    }
-
-    // return the result to the users
     return {
       success: true,
       ml_result
